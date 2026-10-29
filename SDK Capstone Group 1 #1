@@ -1,0 +1,157 @@
+import os
+import matplotlib.pyplot as plt
+import pandas as pd
+from pandas.api.types import is_list_like
+from odp.client import Client
+from odp.catalog_v2 import create_dataset_meta
+import geopandas as gpd
+import webbrowser
+
+api_key = os.getenv("ODP_API_KEY")
+if not api_key:
+    raise RuntimeError("Set the ODP_API_KEY environment variable before running this script.")
+
+cli = Client(api_key=api_key)
+glodap = cli.dataset("a608f54b-75c7-4df9-a3a8-cedbfa391873")
+table = glodap.table
+
+
+# import pyarrow as pa
+
+# schema = table.schema()
+# print(schema)
+
+# as Pandas or GeoPandas df
+# cursor = table.select().dataframes()
+# df = next(cursor)
+# print (df.head())   
+
+
+# Geospatial filter based on the updated polygon coordinates for Canada
+filter_expr = (
+    'geometry within "POLYGON ((-180.9739 72.3175, 0.3049 67.4165, '
+    '-50.862 36.0707, -111.3841 45.1457, -180.9739 72.3175))"'
+)
+df_filtered = table.select(filter=filter_expr).all().dataframe()
+all_null_columns = df_filtered.columns[df_filtered.isna().all()].tolist()
+
+if all_null_columns:
+    df_filtered = df_filtered.drop(columns=all_null_columns)
+    print(f"Skipping columns with no values: {all_null_columns}")
+
+print(df_filtered.head())
+
+if df_filtered.empty:
+    raise ValueError("The geographic filter returned no rows; stopping before upload.")
+
+
+new_ds_id_1 = "39946cbb-4c51-4c31-9419-363f01885fa6"   # paste an existing dataset id here to reuse it
+created_new_dataset_1 = False
+
+if not new_ds_id_1:
+    created = create_dataset_meta(
+        cli,
+        name="ProtectedSeas Navigator V2-Canada",
+        description=(
+            "ProtectedSeas Navigator V2 — Focused: Area-Based Protections in Canada. Created during the Capstone module."
+        ),
+    )
+    new_ds_id_1 = created.id
+    created_new_dataset_1 = True
+
+out_tbl = cli.dataset(new_ds_id_1).table
+new_ds_id_1    
+
+print(f"New dataset for ProtectedSeas Navigator V2-Canada created with ID: {new_ds_id_1}")
+
+print(f"Uploaded {len(df_filtered)} rows.")
+print(f"Hub Ocean now has {out_tbl.stats().num_rows} rows.")
+
+
+glodap_2 = cli.dataset("71877a6f-4afa-434b-8027-0e057c50dd84")
+table_2 = glodap_2.table
+
+
+# Geospatial filter based on the updated polygon coordinates for Canada
+filter_expr_2 = (
+    'geometry within "POLYGON ((-180.9739 72.3175, 0.3049 67.4165, '
+    '-50.862 36.0707, -111.3841 45.1457, -180.9739 72.3175))"'
+)
+df_filtered_2 = table_2.select(filter=filter_expr_2).all().dataframe()
+all_null_columns_2 = df_filtered_2.columns[df_filtered_2.isna().all()].tolist()
+
+if all_null_columns_2:
+    df_filtered_2 = df_filtered_2.drop(columns=all_null_columns_2)
+    print(f"Skipping columns with no values: {all_null_columns_2}")
+
+print(df_filtered_2.head())
+
+
+new_ds_id_2 = "abed45a8-8671-4e1d-858d-f5cd832b6f70"   # paste an existing dataset id here to reuse it
+created_new_dataset_2 = False
+if not new_ds_id_2:
+    created = create_dataset_meta(
+        cli,
+        name="Ocean Sensitive Areas -Canada",
+        description=(
+            "Ocean Sensitive Areas near Eastercoast Canada. Created during the Capstone module."
+        ),
+    )
+    new_ds_id_2 = created.id
+    created_new_dataset_2 = True
+
+out_tbl_2 = cli.dataset(new_ds_id_2).table
+new_ds_id_2    
+print(f"New dataset for Ocean Sensitive Areas -Canada created with ID: {new_ds_id_2}")
+
+print(f"Uploaded {len(df_filtered_2)} rows.")
+print(f"Hub Ocean now has {out_tbl_2.stats().num_rows} rows.")
+
+
+
+glodap_3 = cli.dataset("a1195213-790e-4171-b70d-44ed42f827f0")
+table_3 = glodap_3.table
+
+
+# Geospatial filter based on the updated polygon coordinates for Canada
+filter_expr_3 = (
+    'geometry within "POLYGON ((-180.9739 72.3175, 0.3049 67.4165, '
+    '-50.862 36.0707, -111.3841 45.1457, -180.9739 72.3175))"'
+)
+df_filtered_3 = table_3.select(filter=filter_expr_3).all().dataframe()
+
+all_null_columns_3 = df_filtered_3.columns[df_filtered_3.isna().all()].tolist()
+
+if all_null_columns_3:
+    df_filtered_3 = df_filtered_3.drop(columns=all_null_columns_3)
+    print(f"Skipping columns with no values: {all_null_columns_3}")
+
+print(df_filtered_3.head())
+
+
+new_ds_id_3 = "212f9509-6c44-4022-8e36-1c0846841087"   # paste an existing dataset id here to reuse it
+created_new_dataset_3 = False
+if not new_ds_id_3:
+    created = create_dataset_meta(
+        cli,
+        name="World Port Index-Canada -Canada",
+        description=(
+            "World Port Index-Canada near Eastercoast Canada. Created during the Capstone module."
+        ),
+    )
+    new_ds_id_3 = created.id
+    created_new_dataset_3 = True
+
+out_tbl_3 = cli.dataset(new_ds_id_3).table
+new_ds_id_3    
+
+print(f"New dataset for World Port Index-Canada near Eastercoast Canada created with ID: {new_ds_id_3 }")
+
+
+print(f"Uploaded {len(df_filtered_3)} rows.")
+print(f"Hub Ocean now has {out_tbl_3.stats().num_rows} rows.")
+
+
+
+
+

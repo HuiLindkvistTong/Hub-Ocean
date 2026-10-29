@@ -1,0 +1,24 @@
+/.venv
+/03_Exercise_Protected_Areas_Norway.ipynb
+/05_Exercise_Caribbean_Coral_Count.ipynb
+/Export_bathymetry
+/hubocean_datasets.pbix
+/hubocean_datasets.xlsx
+/hubocean_name_text_analysis.png
+/hubocean_name_text_mining_map.png
+/RelativeBathymetry
+/SDK #1
+/SDK #2
+/SDK #3
+/SDK #4
+/SDK - QGIS
+/SDK Capstone Group 2 #2
+/SDK Capstone Group 2 #3 QGIS
+/SDK Capstone Group 2 #3 QGIS - layer report.txt
+/SDK Cesium
+/SDK dataset Excel
+/SDK dataset ODP
+/SDK dataset PowerBI
+/SDK Norway
+/SDK Webvisulization.html
+/__pycache__
